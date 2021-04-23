@@ -23,3 +23,9 @@
 #
 # Если какая-то из ссылок не открывается - напишите в ЛС, исправим
 
+import time
+from selenium import webdriver
+
+if __name__=='__main__':
+    driver_path = './chromedriver'
+    driver = webdriver.Chrome(driver_path)
