@@ -31,3 +31,6 @@ if __name__ == '__main__':
     driver = webdriver.Chrome(driver_path)
     url = 'https://vk.com/tokyofashion'
     driver.get(url)
+    time.sleep(2)
+
+
