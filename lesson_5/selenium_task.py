@@ -25,6 +25,7 @@
 
 import time
 from selenium import webdriver
+import mongo
 
 if __name__ == '__main__':
     driver_path = './chromedriver'
@@ -32,5 +33,12 @@ if __name__ == '__main__':
     url = 'https://vk.com/tokyofashion'
     driver.get(url)
 
+    # вдруг капча
     time.sleep(2)
     tag_to_captcha = driver.find_element_by_xpath('//button[contains(text(),"Cancel")]')
+    tag_to_captcha.click()
+
+    time.sleep(1)
+    tag_to_captcha = driver.find_element_by_xpath('//a[contains(class,"tab_search")]')
+
+    driver.close()
