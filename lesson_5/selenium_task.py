@@ -65,13 +65,42 @@ if __name__ == '__main__':
     # with open('html.html', 'w', encoding='utf-8') as f:
     #     f.write(driver.page_source)
 
-    old_element = None
-    for i in range(2):
-        article = driver.find_elements_by_xpath('//div[@class="_post_content"]')[-1]
+    # old_element = None
+    old_len_posts = 0
+    while True:
+        full_posts = driver.find_elements_by_xpath('//div[@class="_post_content"]')
+        # if old_element is None:
+        #     old_element = article
+
         # print(article)
         actions = ActionChains(driver)
-        actions.move_to_element(article)
+        actions.move_to_element(full_posts[-1])
         actions.perform()
+        time.sleep(1)
+
+        break
+
+        if len(full_posts) == old_len_posts:
+            break
+        else:
+            old_len_posts = len(full_posts)
+
+    info_list = []
+    for post in full_posts:
+        post.click()
+        # time.sleep(1)
+        # info = {}
+        # # - Дата поста
+        # # - Текст поста
+        # # - Ссылка на пост(полная)
+        # # - Ссылки на изображения(если они есть)
+        # # - Количество лайков, "поделиться" и просмотров поста
+        # info['create_at'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
+        # info['text'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
+        # info['text'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
+        # print(info)
+        # info_list.append(info)
+        post.send_keys(Keys.ESCAPE)
         time.sleep(1)
 
     # with open('html.html','w', encoding='utf-8') as f:
