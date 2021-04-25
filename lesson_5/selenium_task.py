@@ -39,6 +39,6 @@ if __name__ == '__main__':
     tag_to_captcha.click()
 
     time.sleep(1)
-    tag_to_captcha = driver.find_element_by_xpath('//a[contains(class,"tab_search")]')
+    tag_to_captcha = driver.find_element_by_xpath('//a[contains(@class,"tab_search")]/@href')
 
     driver.close()
