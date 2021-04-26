@@ -110,7 +110,7 @@ class SeleniumDriver:
             time.sleep(1)
             tag_to_captcha = self.driver_s.find_element_by_xpath('//button[contains(text(),"Cancel")]')
             tag_to_captcha.click()
-        except Exception as err:
+        except Exception:
             logging.info('no captche')
 
 
