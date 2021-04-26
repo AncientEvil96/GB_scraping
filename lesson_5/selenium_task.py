@@ -110,4 +110,15 @@ if __name__ == '__main__':
     time.sleep(1)
     driver.quit()
 
+    with MongoClient('localhost:27017') as client:
+        db = client['news']
+        collection = db['day_news']
 
+        mongo = MongoCollectionProcessor(collection)
+
+        # заполнение данных
+        mongo.write_mongo(mail_news.info_list, no_check=False)
+
+        # полная выгрузка
+        result = mongo.query_mongo({})
+        mongo.result_output(result)
