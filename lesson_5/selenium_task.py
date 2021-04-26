@@ -85,61 +85,24 @@ if __name__ == '__main__':
         info['like'] = open_post.find_element_by_xpath('//a[contains(@class,"_like")]').text
         info['reposts'] = open_post.find_element_by_xpath('//a[contains(@class,"_share")]').text
         info['views'] = open_post.find_element_by_xpath('//div[contains(@class,"_views")]').text
-        list_img = post.find_elements_by_xpath('//div[contains(@class,"_thumbs")]//a[contains(@aria-label,".jpg")]')
-        list_img[0].find_element_by_xpath('//a[contains(@class,'
-                                          '"image_cover")]').get_attribute('style').split(';')[2][24:-2]
+        # try:
+        #     list_img = post.find_elements_by_xpath('//div[contains(@class,"_thumbs")]//a[contains(@aria-label,".jpg")]')
+        #     info['img'] = [i.get_attribute('style').split(';')[2][24:-2] for i in list_img]
+        # except Exception as err:
+        #     logging.info('not foto')
 
-        print()
-        str('').split()
-        # url_search = list_img.get_attribute('aria-label')
-        # for i in list_img:
-        #     print(i.get_attribute('aria-label').replace('фотография Original: ', ''))
-        # info['img'] = [i.get_attribute('aria-label').replace('фотография Original: ', '') for i in list_img]
-        # with open('html.html', 'w', encoding='utf-8') as f:
-        #     f.write(open_post.page_source)
         open_post.click()
         time.sleep(1)
-        # driver_2 = webdriver.Chrome(driver_path)
-        # driver_2.get(driver.current_url)
         info['href'] = driver.current_url
+        list_img = driver.find_elements_by_xpath('//div[@class="wl_post_body_wrap"]//a[contains(@class,"image_cover")]')
+        info['img'] = [i.get_attribute('aria-label').replace('фотография Original: ', '') for i in list_img]
+
         time.sleep(2)
         driver.back()
-
-        # info['href'] = driver_2.current_url
-        # driver_2.quit()
-        print(info)
-        break
-
-        # # - Дата поста
-        # # - Текст поста
-        # # - Ссылка на пост(полная)
-        # # - Ссылки на изображения(если они есть)
-        # # - Количество лайков, "поделиться" и просмотров поста
-        # info['create_at'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
-        # info['text'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
-        # info['text'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
-        # print(info)
-        # info_list.append(info)
-        # info['create_at'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
-        exit_post = driver.find_element_by_class_name('wk_close_inner')
-        exit_post.click()
-        time.sleep(1)
-        driver.get(driver.current_url)
         info_list.append(info)
-
-    # with open('html.html','w', encoding='utf-8') as f:
-    #     f.write(driver.page_source)
-
-    # search.click()
-    # search.send_keys(Keys.END)
 
     for i in info_list:
         print(i)
 
-    # info_list = []
-    # posts = driver.find_element_by_xpath('//div[@id="page_wall_posts"]//div[@class="_post_content"]')
-
-    time.sleep(10)
-    #
-    #
+    time.sleep(1)
     driver.quit()
