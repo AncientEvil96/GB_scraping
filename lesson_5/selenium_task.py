@@ -29,6 +29,7 @@ from selenium.webdriver.common.keys import Keys
 import mongo
 import logging
 from selenium.webdriver.common.action_chains import ActionChains
+
 # from selenium.webdriver.chrome.options import Options
 
 if __name__ == '__main__':
@@ -52,27 +53,16 @@ if __name__ == '__main__':
     time.sleep(1)
     search = driver.find_element_by_xpath('//a[contains(@class,"tab_search")]')
     url_search = search.get_attribute('href')
-    # print(url_search)
-    # url_search = 'https://vk.com/wall-29341229?offset=0&q=%D0%BE%D1%82%D0%BB%D0%B8%D1%87%D0%BD%D0%B0%D1%8F'
     driver.get(url_search)
     search = driver.find_element_by_xpath('//input[@id="wall_search"]')
     search.send_keys('отличная' + Keys.ENTER)
-    time.sleep(2)
-    # print(driver.current_url)
+    time.sleep(1)
     url_search = driver.current_url
     driver.get(url_search)
 
-    # with open('html.html', 'w', encoding='utf-8') as f:
-    #     f.write(driver.page_source)
-
-    # old_element = None
     old_len_posts = 0
     while True:
         full_posts = driver.find_elements_by_xpath('//div[@class="_post_content"]')
-        # if old_element is None:
-        #     old_element = article
-
-        # print(article)
         actions = ActionChains(driver)
         actions.move_to_element(full_posts[-1])
         actions.perform()
@@ -87,9 +77,39 @@ if __name__ == '__main__':
 
     info_list = []
     for post in full_posts:
-        post.click()
-        # time.sleep(1)
-        # info = {}
+        info = {}
+        # '//div[@class="wall_post_text"]'
+        info['date'] = post.find_element_by_xpath('//div[@class="post_date"]/a').text
+        open_post = post.find_element_by_class_name('wall_post_text')
+        info['text'] = open_post.text
+        info['like'] = open_post.find_element_by_xpath('//a[contains(@class,"_like")]').text
+        info['reposts'] = open_post.find_element_by_xpath('//a[contains(@class,"_share")]').text
+        info['views'] = open_post.find_element_by_xpath('//div[contains(@class,"_views")]').text
+        list_img = post.find_elements_by_xpath('//div[contains(@class,"_thumbs")]//a[contains(@aria-label,".jpg")]')
+        list_img[0].find_element_by_xpath('//a[contains(@class,'
+                                          '"image_cover")]').get_attribute('style').split(';')[2][24:-2]
+
+        print()
+        str('').split()
+        # url_search = list_img.get_attribute('aria-label')
+        # for i in list_img:
+        #     print(i.get_attribute('aria-label').replace('фотография Original: ', ''))
+        # info['img'] = [i.get_attribute('aria-label').replace('фотография Original: ', '') for i in list_img]
+        # with open('html.html', 'w', encoding='utf-8') as f:
+        #     f.write(open_post.page_source)
+        open_post.click()
+        time.sleep(1)
+        # driver_2 = webdriver.Chrome(driver_path)
+        # driver_2.get(driver.current_url)
+        info['href'] = driver.current_url
+        time.sleep(2)
+        driver.back()
+
+        # info['href'] = driver_2.current_url
+        # driver_2.quit()
+        print(info)
+        break
+
         # # - Дата поста
         # # - Текст поста
         # # - Ссылка на пост(полная)
@@ -100,8 +120,12 @@ if __name__ == '__main__':
         # info['text'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
         # print(info)
         # info_list.append(info)
-        post.send_keys(Keys.ESCAPE)
+        # info['create_at'] = post.find_element_by_xpath('//span[@class="rel_date"]').text
+        exit_post = driver.find_element_by_class_name('wk_close_inner')
+        exit_post.click()
         time.sleep(1)
+        driver.get(driver.current_url)
+        info_list.append(info)
 
     # with open('html.html','w', encoding='utf-8') as f:
     #     f.write(driver.page_source)
@@ -109,6 +133,8 @@ if __name__ == '__main__':
     # search.click()
     # search.send_keys(Keys.END)
 
+    for i in info_list:
+        print(i)
 
     # info_list = []
     # posts = driver.find_element_by_xpath('//div[@id="page_wall_posts"]//div[@class="_post_content"]')
