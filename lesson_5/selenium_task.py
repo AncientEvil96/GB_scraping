@@ -57,7 +57,6 @@ class SeleniumDriver:
         url_search = self.driver_s.current_url
         self.driver_s.get(url_search)
 
-
     def get_all_post(self):
         old_len_posts = 0
         while True:
