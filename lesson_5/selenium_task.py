@@ -117,9 +117,10 @@ class SeleniumDriver:
 
 if __name__ == '__main__':
     url = 'https://vk.com/tokyofashion'
+    search_text = input('Введите текст поиска: ')
     my_sel = SeleniumDriver('log_vk.log')
     my_sel.connect_driver()
-    my_sel.get_vk_post(url, input('Введите текст поиска: '))
+    my_sel.get_vk_post(url, search_text)
     my_sel.get_all_post()
     my_sel.get_info()
     my_sel.close_driver()
