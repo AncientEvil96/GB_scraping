@@ -12,3 +12,10 @@
 # Паук должен формировать item'ы по аналогичной структуре и складывать данные также в БД
 # (Подумайте про обновление! Вам ведь нужна актуальная информация по вакансии)
 
+import time
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from mongo import MongoCollectionProcessor
+from pymongo import MongoClient
+import logging
