@@ -33,8 +33,8 @@ import logging
 
 
 class SeleniumDriver:
-    def __init__(self):
-        logging.basicConfig(filename='log.log', filemode='w', level=logging.INFO)
+    def __init__(self, log_path):
+        logging.basicConfig(filename=log_path, filemode='w', level=logging.INFO)
         self._driver_path = './chromedriver'
         self.posts = []
         self.info_list = []
@@ -102,9 +102,6 @@ class SeleniumDriver:
             except Exception:
                 logging.info('no loading')
 
-        time.sleep(1)
-        self.driver_s.quit()
-
     def check_captche(self):
         try:
             time.sleep(1)
@@ -113,14 +110,19 @@ class SeleniumDriver:
         except Exception:
             logging.info('no captche')
 
+    def close_driver(self):
+        time.sleep(1)
+        self.driver_s.quit()
+
 
 if __name__ == '__main__':
     url = 'https://vk.com/tokyofashion'
-    my_sel = SeleniumDriver()
+    my_sel = SeleniumDriver('log_vk.log')
     my_sel.connect_driver()
-    my_sel.get_vk_post(url, 'отличная')
+    my_sel.get_vk_post(url, input('Введите текст поиска: '))
     my_sel.get_all_post()
     my_sel.get_info()
+    my_sel.close_driver()
 
     with MongoClient('localhost:27017') as client:
         db = client['posts']
