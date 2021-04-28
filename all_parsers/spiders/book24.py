@@ -10,10 +10,13 @@
 # 3) Собранная информация дожна складываться в базу данных
 # (Нужно ли здесь обновление? Нужны ли дубликаты?)
 
-import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-from mongo import MongoCollectionProcessor
-from pymongo import MongoClient
-import logging
+import scrapy
+
+
+class Book24Spider(scrapy.Spider):
+    name = 'book24'
+    allowed_domains = ['book24.ru']
+    start_urls = ['http://book24.ru/']
+
+    def parse(self, response):
+        pass
