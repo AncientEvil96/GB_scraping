@@ -9,4 +9,7 @@ import scrapy
 class AllParsersItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    # pass
+    href = scrapy.Field()
+    name = scrapy.Field()
+    autor = scrapy.Field()

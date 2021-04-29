@@ -12,6 +12,7 @@
 
 import scrapy
 from scrapy.http import HtmlResponse
+from all_parsers.items import AllParsersItem
 
 
 class LabirintSpider(scrapy.Spider):
@@ -32,10 +33,12 @@ class LabirintSpider(scrapy.Spider):
             yield response.follow(next_page, self.parse)
 
     def get_info(self, response: HtmlResponse):
-        info = {}
-        info['href'] = response.url
-        info['name'] = response.xpath('//div[@id="product-title"]/h1/text()').get()
-        info['autor'] = response.xpath('//div[@class="authors"]/text()').get()
-        info['price'] = float(response.xpath('//span[@class="buying-priceold-val-number"]/text()').get())
-        info['discount'] = float(response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get())
-        info['rate'] = float(response.xpath('//div[@id="rate"]/text()').get())
+        item = AllParsersItem()
+        yield item
+        # info = {}
+        # info['href'] = response.url
+        # info['name'] = response.xpath('//div[@id="product-title"]/h1/text()').get()
+        # info['autor'] = response.xpath('//div[@class="authors"]/text()').get()
+        # info['price'] = float(response.xpath('//span[@class="buying-priceold-val-number"]/text()').get())
+        # info['discount'] = float(response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get())
+        # info['rate'] = float(response.xpath('//div[@id="rate"]/text()').get())
