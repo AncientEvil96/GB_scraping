@@ -13,3 +13,6 @@ class AllParsersItem(scrapy.Item):
     href = scrapy.Field()
     name = scrapy.Field()
     autor = scrapy.Field()
+    price = scrapy.Field()
+    discount = scrapy.Field()
+    rate = scrapy.Field()

@@ -25,20 +25,19 @@ class LabirintSpider(scrapy.Spider):
 
         links = response.xpath('//div[contains(@class,"card-column")]//a[@class="product-title-link"]/@href').getall()
         for link in links:
-            yield response.follow(link, self.get_info)
+            yield response.follow(link, self.process_item)
 
         next_page = response.xpath('//div[@class="pagination-next"]/a/@href').get()
         if next_page:
             print(next_page)
             yield response.follow(next_page, self.parse)
 
-    def get_info(self, response: HtmlResponse):
-        item = AllParsersItem()
-        yield item
-        # info = {}
-        # info['href'] = response.url
-        # info['name'] = response.xpath('//div[@id="product-title"]/h1/text()').get()
-        # info['autor'] = response.xpath('//div[@class="authors"]/text()').get()
-        # info['price'] = float(response.xpath('//span[@class="buying-priceold-val-number"]/text()').get())
-        # info['discount'] = float(response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get())
-        # info['rate'] = float(response.xpath('//div[@id="rate"]/text()').get())
+    def process_item(self, response: HtmlResponse):
+        info = AllParsersItem()
+        info['href'] = response.url
+        info['name'] = response.xpath('//div[@id="product-title"]/h1/text()').get()
+        info['autor'] = response.xpath('//div[@class="authors"]/text()').get()
+        info['price'] = float(response.xpath('//span[@class="buying-priceold-val-number"]/text()').get())
+        info['discount'] = float(response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get())
+        info['rate'] = float(response.xpath('//div[@id="rate"]/text()').get())
+        yield info

@@ -6,8 +6,13 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+from pymongo import MongoClient
 
 class AllParsersPipeline:
+    def __init__(self):
+        self.client = MongoClient('localhost:27017')
+        self.db = self.client('books')
+
     def process_item(self, item, spider):
+        self.db
         return item
