@@ -21,15 +21,13 @@ class LabirintSpider(scrapy.Spider):
     start_urls = ['https://www.labirint.ru/search/%D0%A2%D0%B0%D1%80%D0%BC%D0%B0%D1%88%D0%B5%D0%B2/?stype=0']
 
     def parse(self, response: HtmlResponse):
-        info_list = []
-
         links = response.xpath('//div[contains(@class,"card-column")]//a[@class="product-title-link"]/@href').getall()
         for link in links:
             yield response.follow(link, self.process_item)
 
         next_page = response.xpath('//div[@class="pagination-next"]/a/@href').get()
         if next_page:
-            print(next_page)
+            # print(next_page)
             yield response.follow(next_page, self.parse)
 
     def process_item(self, response: HtmlResponse):
