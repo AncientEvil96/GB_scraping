@@ -37,7 +37,7 @@ class LabirintSpider(scrapy.Spider):
         info['href'] = response.url
         info['name'] = response.xpath('//div[@id="product-title"]/h1/text()').get()
         info['autor'] = response.xpath('//div[@class="authors"]/a/text()').get()
-        info['price'] = response.xpath('//div[contains(@class,"buying-price")]'
+        info['price'] = response.xpath('//div[contains(@class,"price")]'
                                        '//span[contains(@class,"-number")]/text()').get()
         info['discount'] = response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get()
         info['rate'] = response.xpath('//div[@id="rate"]/text()').get()

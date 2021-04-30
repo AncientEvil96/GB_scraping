@@ -16,7 +16,7 @@ import scrapy
 class Book24Spider(scrapy.Spider):
     name = 'book24'
     allowed_domains = ['book24.ru']
-    start_urls = ['http://book24.ru/']
+    start_urls = ['https://book24.ru/novie-knigi/']
 
     def parse(self, response):
         pass
