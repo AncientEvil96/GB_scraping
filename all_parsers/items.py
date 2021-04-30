@@ -10,6 +10,8 @@ class AllParsersItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     # pass
+    _id = scrapy.Field()
+    id = scrapy.Field()
     href = scrapy.Field()
     name = scrapy.Field()
     autor = scrapy.Field()
