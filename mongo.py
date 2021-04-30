@@ -34,7 +34,7 @@ class MongoCollectionProcessor:
             # второй вариант как вы и сказали переделал с upsert
             for line in data:
                 try:
-                    self._collection.update_many({'href': {'$eq': line['href']}}, {'$set': line}, upsert=True)
+                    self._collection.update_one({'href': {'$eq': line['href']}}, {'$set': line}, upsert=True)
                 except Exception as err:
                     logging.error(f'Dublicate save: {err}')
 
