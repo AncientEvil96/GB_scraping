@@ -28,36 +28,43 @@
 
 import scrapy
 from scrapy.http import HtmlResponse
+from scrapy.loader import ItemLoader
 from leroy_merlin.leroy_parser.items import LeroyParserItem
 
 
 class LeroyMerlinSpider(scrapy.Spider):
     name = 'leroy_merlin'
     allowed_domains = ['naberezhnye-chelny.leroymerlin.ru']
-    # start_urls = ['https://naberezhnye-chelny.leroymerlin.ru']
 
     def __init__(self, search: str):
-        super().__init__(self)
+        super().__init__()
         self.start_urls = [f'https://naberezhnye-chelny.leroymerlin.ru/search/?q={search}']
 
     def parse(self, response: HtmlResponse):
-        links = response.xpath('//div[@class="phytpj4_plp largeCard"]//a[@data-qa="product-name"]/@href').getall()
+        links = response.xpath('//div[@class="phytpj4_plp largeCard"]//a[@data-qa="product-name"]/@href')
         for link in links:
             yield response.follow(link, self.process_item)
 
-        next_page = response.xpath('//a[contains(@aria-label,"Следующая страница")]/@href').get()
+        next_page = response.xpath('//a[contains(@aria-label,"Следующая страница")]/@href')
         if next_page:
             yield response.follow(next_page, self.parse)
 
-        print()
-
     def process_item(self, response: HtmlResponse):
         info = LeroyParserItem()
-        info['href'] = response.url
-        info['name'] = response.xpath('//h1/text()').get()
-        info['price'] = response.xpath('//span[@slot="price"]/text()').get()
-        # info['autor'] = response.xpath('//div[@class="authors"]/a/text()').get()
-        # info['discount'] = response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get()
-        # info['rate'] = response.xpath('//div[@id="rate"]/text()').get()
-        print()
+        loader = ItemLoader(item=info, response=response)
+        loader.add_xpath('id', response.xpath('//@context-id').get())
+        loader.add_xpath('href', response.url)
+        loader.add_xpath('name', response.xpath('//h1/text()').get())
+        loader.add_xpath('price', response.xpath('//span[@slot="price"]/text()').get())
+        loader.add_xpath('key', response.xpath('//dt[@class="def-list__term"]/text()').getall())
+        loader.add_xpath('value', response.xpath('//dd[@class="def-list__definition"]/text()').getall())
+        loader.add_xpath('img', response.xpath('//img[contains(@slot,"thumbs")]/@src').getall())
+
+        # info['href'] = response.url
+        # info['name'] = response.xpath('//h1/text()').get()
+        # info['price'] = response.xpath('//span[@slot="price"]/text()').get()
+        # info['key'] = response.xpath('//dt[@class="def-list__term"]/text()').getall()
+        # info['value'] = response.xpath('//dd[@class="def-list__definition"]/text()').getall()
+        # info['id'] = response.xpath('//@context-id').get()
+        # info['img'] = response.xpath('//img[contains(@slot,"thumbs")]/@src').getall()
         yield info
