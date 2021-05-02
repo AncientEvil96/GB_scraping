@@ -9,10 +9,10 @@ import scrapy
 class LeroyParserItem(scrapy.Item):
     # _id = scrapy.Field()
     # id = scrapy.Field()
-    # href = scrapy.Field()
-    # name = scrapy.Field()
+    href = scrapy.Field()
+    name = scrapy.Field()
     # autor = scrapy.Field()
-    # price = scrapy.Field()
+    price = scrapy.Field()
     # discount = scrapy.Field()
     # rate = scrapy.Field()
 

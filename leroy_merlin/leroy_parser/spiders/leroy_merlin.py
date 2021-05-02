@@ -34,7 +34,11 @@ from leroy_merlin.leroy_parser.items import LeroyParserItem
 class LeroyMerlinSpider(scrapy.Spider):
     name = 'leroy_merlin'
     allowed_domains = ['naberezhnye-chelny.leroymerlin.ru']
-    start_urls = ['https://naberezhnye-chelny.leroymerlin.ru/catalogue/elektroinstrumenty/']
+    # start_urls = ['https://naberezhnye-chelny.leroymerlin.ru']
+
+    def __init__(self, search: str):
+        super().__init__(self)
+        self.start_urls = [f'https://naberezhnye-chelny.leroymerlin.ru/search/?q={search}']
 
     def parse(self, response: HtmlResponse):
         links = response.xpath('//div[@class="phytpj4_plp largeCard"]//a[@data-qa="product-name"]/@href').getall()
@@ -45,12 +49,15 @@ class LeroyMerlinSpider(scrapy.Spider):
         if next_page:
             yield response.follow(next_page, self.parse)
 
+        print()
+
     def process_item(self, response: HtmlResponse):
         info = LeroyParserItem()
         info['href'] = response.url
         info['name'] = response.xpath('//h1/text()').get()
-        # info['autor'] = response.xpath('//div[@class="authors"]/a/text()').get()
         info['price'] = response.xpath('//span[@slot="price"]/text()').get()
+        # info['autor'] = response.xpath('//div[@class="authors"]/a/text()').get()
         # info['discount'] = response.xpath('//span[@class="buying-pricenew-val-number"]/text()').get()
         # info['rate'] = response.xpath('//div[@id="rate"]/text()').get()
+        print()
         yield info
