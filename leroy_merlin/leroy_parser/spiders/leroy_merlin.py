@@ -60,11 +60,4 @@ class LeroyMerlinSpider(scrapy.Spider):
         loader.add_xpath('value', '//dd[@class="def-list__definition"]/text()')
         loader.add_xpath('img', '//img[contains(@slot,"thumbs")]/@src')
 
-        # info['href'] = response.url
-        # info['name'] = response.xpath('//h1/text()').get()
-        # info['price'] = response.xpath('//span[@slot="price"]/text()').get()
-        # info['key'] = response.xpath('//dt[@class="def-list__term"]/text()').getall()
-        # info['value'] = response.xpath('//dd[@class="def-list__definition"]/text()').getall()
-        # info['id'] = response.xpath('//@context-id').get()
-        # info['img'] = response.xpath('//img[contains(@slot,"thumbs")]/@src').getall()
         yield loader.load_item()

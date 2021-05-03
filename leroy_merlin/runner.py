@@ -7,9 +7,8 @@ from urllib.parse import quote_plus
 if __name__ == '__main__':
     crawler_settings = Settings()
     crawler_settings.setmodule(settings)
-    # text_s = input('Write search text: ')
-    search = quote_plus('дрель')
+    text_s = input('Write search text: ')
+    search = quote_plus(text_s)
     process = CrawlerProcess(settings=crawler_settings)
     process.crawl(LeroyMerlinSpider, search=search)
-
     process.start()

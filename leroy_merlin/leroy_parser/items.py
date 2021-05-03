@@ -25,10 +25,12 @@ def get_int(value):
 
 
 class LeroyParserItem(scrapy.Item):
+
+    #TODO: почему не работают статик методы???
     # @staticmethod
     # def get_big_img(url: str):
     #     return url.replace('w_82,h_82', 'w_2000,h_2000')
-
+    #
     # @staticmethod
     # def get_property(property_list):
     #     key, value = property_list
@@ -43,4 +45,3 @@ class LeroyParserItem(scrapy.Item):
     value = scrapy.Field(input_processor=MapCompose(get_strip))
     property = scrapy.Field(input_processor=MapCompose(get_property))
     img = scrapy.Field(input_processor=MapCompose(get_big_img))
-    print()
