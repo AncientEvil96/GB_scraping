@@ -37,7 +37,7 @@ class LeroyParserItem(scrapy.Item):
     #     return {key.strip(): value.strip()}
 
     _id = scrapy.Field()
-    id = scrapy.Field(output_processor=TakeFirst())
+    id = scrapy.Field(output_processor=TakeFirst(), input_processor=Compose(get_int))
     href = scrapy.Field(output_processor=TakeFirst())
     name = scrapy.Field(output_processor=TakeFirst())
     price = scrapy.Field(output_processor=TakeFirst(), input_processor=Compose(get_int))
