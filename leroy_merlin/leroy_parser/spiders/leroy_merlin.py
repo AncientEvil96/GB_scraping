@@ -52,13 +52,13 @@ class LeroyMerlinSpider(scrapy.Spider):
     def process_item(self, response: HtmlResponse):
         info = LeroyParserItem()
         loader = ItemLoader(item=info, response=response)
-        loader.add_xpath('id', response.xpath('//@context-id').get())
-        loader.add_xpath('href', response.url)
-        loader.add_xpath('name', response.xpath('//h1/text()').get())
-        loader.add_xpath('price', response.xpath('//span[@slot="price"]/text()').get())
-        loader.add_xpath('key', response.xpath('//dt[@class="def-list__term"]/text()').getall())
-        loader.add_xpath('value', response.xpath('//dd[@class="def-list__definition"]/text()').getall())
-        loader.add_xpath('img', response.xpath('//img[contains(@slot,"thumbs")]/@src').getall())
+        loader.add_xpath('id', '//@context-id')
+        # loader.add_xpath('href', response.url)
+        loader.add_xpath('name', '//h1/text()')
+        loader.add_xpath('price', '//span[@slot="price"]/text()')
+        loader.add_xpath('key', '//dt[@class="def-list__term"]/text()')
+        loader.add_xpath('value', '//dd[@class="def-list__definition"]/text()')
+        loader.add_xpath('img', '//img[contains(@slot,"thumbs")]/@src')
 
         # info['href'] = response.url
         # info['name'] = response.xpath('//h1/text()').get()

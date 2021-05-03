@@ -9,6 +9,8 @@
 
 BOT_NAME = 'leroy_parser'
 
+IMAGES_STORE = 'leroy_img'
+
 SPIDER_MODULES = ['leroy_parser.spiders']
 NEWSPIDER_MODULE = 'leroy_parser.spiders'
 
@@ -65,6 +67,7 @@ COOKIES_ENABLED = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'leroy_parser.pipelines.LeroyParserPipeline': 300,
+   'leroy_parser.pipelines.LeroyImagesPipeline': 299
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

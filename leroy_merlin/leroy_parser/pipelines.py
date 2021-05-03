@@ -9,7 +9,22 @@ from itemadapter import ItemAdapter
 
 import scrapy
 from pymongo import MongoClient
+from scrapy.pipelines.images import ImagesPipeline
 
+class LeroyImagesPipeline(ImagesPipeline):
+
+    def get_media_requests(self, item, info):
+        if item['img']:
+            for img in item['img']:
+                try:
+                    yield scrapy.Request(img)
+                except Exception as err:
+                    print(err)
+
+    def item_completed(self, results, item, info):
+        if results:
+            item["img"] = [itm[1] for itm in results if itm[0]]
+        return item
 
 
 class LeroyParserPipeline:
@@ -19,13 +34,10 @@ class LeroyParserPipeline:
         self.db = self.client['leroy_assortiments']
 
     def process_item(self, item, spider: scrapy.Spider):
-        item['property'] = self.get_property(list(zip(item['key'], item['value'])))
+        # item['property'] = self.get_property(list(zip(item['key'], item['value'])))
         item['img'] = self.get_big_img(item['img'])
         # self.db[spider.name].update_one({'id': {'$eq': item['id']}}, {'$set': item}, upsert=True)
         return item
-
-    def get_property(self, property_list: list):
-        return [{key.strip(): value.strip()} for key, value in property_list]
 
     def close_spider(self):
         self.client.close()
