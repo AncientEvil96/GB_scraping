@@ -50,10 +50,10 @@ class LeroyMerlinSpider(scrapy.Spider):
             yield response.follow(next_page, self.parse)
 
     def process_item(self, response: HtmlResponse):
-        info = LeroyParserItem()
-        loader = ItemLoader(item=info, response=response)
+        item = LeroyParserItem()
+        loader = ItemLoader(item=item, response=response)
         loader.add_xpath('id', '//@context-id')
-        # loader.add_xpath('href', response.url)
+        loader.add_value('href', response.url)
         loader.add_xpath('name', '//h1/text()')
         loader.add_xpath('price', '//span[@slot="price"]/text()')
         loader.add_xpath('key', '//dt[@class="def-list__term"]/text()')
@@ -67,4 +67,4 @@ class LeroyMerlinSpider(scrapy.Spider):
         # info['value'] = response.xpath('//dd[@class="def-list__definition"]/text()').getall()
         # info['id'] = response.xpath('//@context-id').get()
         # info['img'] = response.xpath('//img[contains(@slot,"thumbs")]/@src').getall()
-        yield info
+        yield loader.load_item()
