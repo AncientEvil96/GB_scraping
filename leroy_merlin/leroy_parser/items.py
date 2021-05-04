@@ -4,7 +4,8 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapy.loader.processors import MapCompose, TakeFirst, Compose
+# from scrapy.loader.processors import MapCompose, TakeFirst, Compose
+from itemloaders.processors import MapCompose, TakeFirst, Compose
 
 
 def get_big_img(url: str):
