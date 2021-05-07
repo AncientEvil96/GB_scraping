@@ -2,7 +2,6 @@ import scrapy
 from scrapy.http import HtmlResponse
 import re
 import json
-from pprint import pprint
 from urllib.parse import quote
 from copy import deepcopy
 from instagram_parser.ista_pars.items import IstaParsItem
@@ -53,16 +52,18 @@ class InstagramSpider(scrapy.Spider):
         data = response.json()
         if data['authenticated']:
             for user in self.search_list:
+                url = f'{self.start_urls[0]}{user}'
                 yield response.follow(
-                    f'{self.start_urls[0]}{user}',
+                    url,
                     callback=self.user_data_parse,
                     cb_kwargs={
-                        "username": user,
+                        'username': user,
+                        'user_url': url
                     }
                 )
                 print()
 
-    def user_data_parse(self, response: HtmlResponse, username):
+    def user_data_parse(self, response: HtmlResponse, username, user_url):
         user_id = self.fetch_user_id(response.text, username)
         variables = {'id': user_id,
                      'include_reel': True,
@@ -77,6 +78,8 @@ class InstagramSpider(scrapy.Spider):
             cb_kwargs={
                 'user_id': user_id,
                 'variables': deepcopy(variables),
+                'username': username,
+                'user_url': user_url
             }
         )
 
@@ -86,6 +89,8 @@ class InstagramSpider(scrapy.Spider):
             cb_kwargs={
                 'user_id': user_id,
                 'variables': deepcopy(variables),
+                'username': username,
+                'user_url': user_url
             }
         )
 
@@ -95,16 +100,18 @@ class InstagramSpider(scrapy.Spider):
         )
         return str_variables
 
-    def user_following_parse(self, response: HtmlResponse, user_id, variables):
+    def user_following_parse(self, response: HtmlResponse, user_id, variables, username, user_url):
         data = response.json()
         edge_follow = data['data']['user']['edge_follow']
 
         item = IstaParsItem()
         loader = ItemLoader(item=item, response=response)
-        loader.add_value('id_parent', user_id)
+        loader.add_value('id', user_id)
+        loader.add_value('name', username)
+        loader.add_value('url', user_url)
+        loader.add_value('user_data', self.get_dict())
         loader.add_value('data_type', 'following')
-        loader.add_value('url', response.url)
-        loader.add_value('edges', edge_follow['edges'])
+        loader.add_value('info', edge_follow['edges'])
         yield loader.load_item()
 
         page_info = edge_follow['page_info']
@@ -121,16 +128,21 @@ class InstagramSpider(scrapy.Spider):
                 }
             )
 
-    def user_followers_parse(self, response: HtmlResponse, user_id, variables):
+    def get_dict(self):
+        return {'following': [], 'followers': []}
+
+    def user_followers_parse(self, response: HtmlResponse, user_id, variables, username, user_url):
         data = response.json()
         edge_followed_by = data['data']['user']['edge_followed_by']
 
         item = IstaParsItem()
         loader = ItemLoader(item=item, response=response)
-        loader.add_value('id_parent', user_id)
+        loader.add_value('id', user_id)
+        loader.add_value('name', username)
+        loader.add_value('url', user_url)
+        loader.add_value('user_data', self.get_dict())
         loader.add_value('data_type', 'followers')
-        loader.add_value('url', response.url)
-        loader.add_value('edges', edge_followed_by['edges'])
+        loader.add_value('info', edge_followed_by['edges'])
         yield loader.load_item()
 
         page_info = edge_followed_by['page_info']
