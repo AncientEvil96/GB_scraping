@@ -17,10 +17,10 @@ class InstagramSpider(scrapy.Spider):
         super().__init__()
         self.login_url = 'https://www.instagram.com/accounts/login/ajax/'
 
-        # self.username = "dedparser"
-        # self.enc_password = "#PWD_INSTAGRAM_BROWSER:10:1619802040:Ac5QAK8dlogyKwvTpn7zJ3IqPNfATwPOfvMuadjURSIzveImb" \
-        #                     "SJC6Of7A/60KCVGzrSyaeMD1YtLJSvLmumLoxeal15ZWMjQrgazyFgfOZGAw0mkHBqXE47ta7HSUNMwCo35u/E" \
-        #                     "lfxoDedfZu9RzJxRO"
+        self.username = "dedparser"
+        self.enc_password = "#PWD_INSTAGRAM_BROWSER:10:1619802040:Ac5QAK8dlogyKwvTpn7zJ3IqPNfATwPOfvMuadjURSIzveImb" \
+                            "SJC6Of7A/60KCVGzrSyaeMD1YtLJSvLmumLoxeal15ZWMjQrgazyFgfOZGAw0mkHBqXE47ta7HSUNMwCo35u/E" \
+                            "lfxoDedfZu9RzJxRO"
 
         self.search_list = search
         # self.posts_hash = '32b14723a678bd4628d70c1f877b94c9'
