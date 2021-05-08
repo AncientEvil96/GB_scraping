@@ -22,11 +22,6 @@ class InstagramSpider(scrapy.Spider):
         #                     "SJC6Of7A/60KCVGzrSyaeMD1YtLJSvLmumLoxeal15ZWMjQrgazyFgfOZGAw0mkHBqXE47ta7HSUNMwCo35u/E" \
         #                     "lfxoDedfZu9RzJxRO"
 
-        self.username = '9061161602'
-        self.enc_password = '#PWD_INSTAGRAM_BROWSER:10:1620316801:AdNQAPin8CM3nCLMs33QZJlULyLfzHuJUJvwmtpaNT5zJyNMHV' \
-                            'D7i/2HvcOkq06TSMXrcxMk0uV5JdEc6L59GZP0lqvsj8J/FqPp/1sP174rmYGx0oxSPQTfUbyBu2PbzwEoH/N0g' \
-                            'HMSRuZ3Sw=='
-
         self.search_list = search
         # self.posts_hash = '32b14723a678bd4628d70c1f877b94c9'
         self.following_hash = '3dec7e2c57367ef3da3d987d89f9dbc8'
