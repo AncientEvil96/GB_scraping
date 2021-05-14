@@ -183,6 +183,3 @@ class InstagramSpider(scrapy.Spider):
             '{\"id\":\"\\d+\",\"username\":\"%s\"}' % username, text
         ).group()
         return json.loads(matched).get('id')
-
-
-'QVFBV0h4Ulk0TEwydmtlMUtXaFFoenJ2cUplY2tXUjZiaWV1VVJFeHY4UGRpRnAyY2dBcy1LRnJxOVRCRHB2Wk1lX2NESjhSZWpxeGg4aTM4aWo1YTF5bQ=='
