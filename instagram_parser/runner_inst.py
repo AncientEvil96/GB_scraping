@@ -9,9 +9,9 @@ if __name__ == '__main__':
     crawler_settings = Settings()
     crawler_settings.setmodule(settings)
 
-    # search = input('Write user ",": ')
+    search = input('Write user ",": ')
     # search = 'vai_gogi'
-    search = 'toockay'
+    # search = 'toockay'
     search_l = [i.strip() for i in search.split(',')]
     process = CrawlerProcess(settings=crawler_settings)
     process.crawl(InstagramSpider, search=search_l)

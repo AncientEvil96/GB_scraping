@@ -49,7 +49,7 @@ class IstaParsPipeline:
         item['user_data'].update({data_type: list_ + self.get_list_info(item['info'])})
         del item['data_type']
         del item['info']
-        # print(item)
+
         collection = self.db[self.db_name]
         result = collection.find({'id': {'$eq': item['id']}})
 
@@ -66,15 +66,8 @@ class IstaParsPipeline:
                                       )
         return item
 
-    # def get_list_info(self, list_info: list):
-    #     return [{'id': i['node']['id'], 'name': i['node']['full_name']} for i in list_info]
-
     def get_list_info(self, list_info: list):
         return [i[0] for i in list_info]
-
-    # def list_save(self, line, list_info=None):
-    #     list_info.append(line)
-    #     yield list_info
 
     def close_spider(self):
         self.client.close()
