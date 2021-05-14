@@ -51,12 +51,15 @@ class IstaParsPipeline:
         del item['info']
 
         collection = self.db[self.db_name]
-        result = collection.find({'id': {'$eq': item['id']}})
+        result = collection.find({'_id': {'$eq': item['id']}})
 
+        # TODO: хз почему не работают конструкции типа len(list(result)) или [i for i in result]
+        first_recording = True
         for line in result:
-            print(line)
+            first_recording = False
+            break
 
-        if len(list(result)) > 0:
+        if first_recording:
             collection.update_one({'_id': {'$eq': item['id']}}, {'$set': item}, upsert=True)
         else:
             for line in item['user_data'][data_type]:
