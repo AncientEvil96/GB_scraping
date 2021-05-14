@@ -68,8 +68,8 @@ COOKIES_ENABLED = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'ista_pars.pipelines.IstaParsPipeline': 300,
-   'ista_pars.pipelines.InstImagesPipeline': 299,
+   'ista_pars.pipelines.IstaParsPipeline': 300
+   # 'ista_pars.pipelines.InstImagesPipeline': 299,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

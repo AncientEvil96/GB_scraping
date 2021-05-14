@@ -38,10 +38,10 @@ class InstImagesPipeline(ImagesPipeline):
 
 class IstaParsPipeline:
 
-    # def __init__(self):
-    #     self.client = MongoClient('localhost:27017')
-    #     self.db = self.client['instagram']
-    #     self.db_name = 'user_info'
+    def __init__(self):
+        self.client = MongoClient('localhost:27017')
+        self.db = self.client['instagram']
+        self.db_name = 'user_info'
 
     def process_item(self, item, spider: scrapy.Spider):
         list_ = item['user_data'].get(item['data_type'])
@@ -49,10 +49,21 @@ class IstaParsPipeline:
         item['user_data'].update({data_type: list_ + self.get_list_info(item['info'])})
         del item['data_type']
         del item['info']
-        # collection = self.db[self.db_name]
-        # result = collection.find({'id': {'$eq': item['id']}})
-        # if len(result) > 0:
-        # collection.update_one({'id': {'$eq': item['id']}}, {'$set': item}, upsert=True)
+        # print(item)
+        collection = self.db[self.db_name]
+        result = collection.find({'id': {'$eq': item['id']}})
+
+        for line in result:
+            print(line)
+
+        if len(list(result)) > 0:
+            collection.update_one({'_id': {'$eq': item['id']}}, {'$set': item}, upsert=True)
+        else:
+            for line in item['user_data'][data_type]:
+                collection.update_one({'_id': {'$eq': item['id']}},
+                                      {'$addToSet': {f'user_data.{data_type}': line}},
+                                      upsert=True
+                                      )
         return item
 
     # def get_list_info(self, list_info: list):
@@ -65,5 +76,5 @@ class IstaParsPipeline:
     #     list_info.append(line)
     #     yield list_info
 
-    # def close_spider(self):
-    #     self.client.close()
+    def close_spider(self):
+        self.client.close()

@@ -17,10 +17,15 @@ class InstagramSpider(scrapy.Spider):
         super().__init__()
         self.login_url = 'https://www.instagram.com/accounts/login/ajax/'
 
-        self.username = "dedparser"
-        self.enc_password = "#PWD_INSTAGRAM_BROWSER:10:1619802040:Ac5QAK8dlogyKwvTpn7zJ3IqPNfATwPOfvMuadjURSIzveImb" \
-                            "SJC6Of7A/60KCVGzrSyaeMD1YtLJSvLmumLoxeal15ZWMjQrgazyFgfOZGAw0mkHBqXE47ta7HSUNMwCo35u/E" \
-                            "lfxoDedfZu9RzJxRO"
+        # self.username = "dedparser"
+        # self.enc_password = "#PWD_INSTAGRAM_BROWSER:10:1619802040:Ac5QAK8dlogyKwvTpn7zJ3IqPNfATwPOfvMuadjURSIzveImb" \
+        #                     "SJC6Of7A/60KCVGzrSyaeMD1YtLJSvLmumLoxeal15ZWMjQrgazyFgfOZGAw0mkHBqXE47ta7HSUNMwCo35u/E" \
+        #                     "lfxoDedfZu9RzJxRO"
+
+        self.username = '+79061161602'
+        self.enc_password = '#PWD_INSTAGRAM_BROWSER:10:1620972207:AWFQANKqxF647PQtckqZ9dmUhhCUVnwSY1Z21BC4aLE5JIFj0og' \
+                            'AbSz9COXU8xLXHrGVcEzHv3OtQEOluFNVryqugQKPJAHmSvXk6QV0NVGno2mKp2r6WJ/8mtNhNUa+/N9NS/7CLrz' \
+                            'Q4xycGQ=='
 
         self.search_list = search
         # self.posts_hash = '32b14723a678bd4628d70c1f877b94c9'
@@ -29,6 +34,11 @@ class InstagramSpider(scrapy.Spider):
         self.graphql_url = "graphql/query/?"
 
     def parse(self, response: HtmlResponse):
+
+        """
+        делаем авторизацию, илд для сохранения состояния входа
+        """
+
         csrf_token = self.fetch_csrf_token(response.text)
         yield scrapy.FormRequest(
             self.login_url,
@@ -44,6 +54,11 @@ class InstagramSpider(scrapy.Spider):
         )
 
     def user_login(self, response: HtmlResponse):
+
+        """
+        проходимся по тем кого хотим парсить
+        """
+
         data = response.json()
         if data['authenticated']:
             for user in self.search_list:
@@ -56,9 +71,13 @@ class InstagramSpider(scrapy.Spider):
                         'user_url': url
                     }
                 )
-                print()
 
     def user_data_parse(self, response: HtmlResponse, username, user_url):
+
+        """
+        парсим подписчиков и подписки
+        """
+
         user_id = self.fetch_user_id(response.text, username)
         variables = {'id': user_id,
                      'include_reel': True,
@@ -120,6 +139,8 @@ class InstagramSpider(scrapy.Spider):
                 cb_kwargs={
                     "user_id": user_id,
                     "variables": deepcopy(variables),
+                    'username': username,
+                    'user_url': user_url
                 }
             )
 
@@ -151,6 +172,8 @@ class InstagramSpider(scrapy.Spider):
                 cb_kwargs={
                     "user_id": user_id,
                     "variables": deepcopy(variables),
+                    'username': username,
+                    'user_url': user_url
                 }
             )
 
@@ -165,3 +188,6 @@ class InstagramSpider(scrapy.Spider):
             '{\"id\":\"\\d+\",\"username\":\"%s\"}' % username, text
         ).group()
         return json.loads(matched).get('id')
+
+
+'QVFBV0h4Ulk0TEwydmtlMUtXaFFoenJ2cUplY2tXUjZiaWV1VVJFeHY4UGRpRnAyY2dBcy1LRnJxOVRCRHB2Wk1lX2NESjhSZWpxeGg4aTM4aWo1YTF5bQ=='
