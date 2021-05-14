@@ -5,7 +5,6 @@ from instagram_parser.ista_pars.spiders.instagram import InstagramSpider
 from instagram_parser.ista_pars import settings
 
 if __name__ == '__main__':
-
     crawler_settings = Settings()
     crawler_settings.setmodule(settings)
 

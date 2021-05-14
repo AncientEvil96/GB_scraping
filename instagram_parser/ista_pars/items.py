@@ -39,6 +39,7 @@ def get_clean_data(line: dict):
 
     return my_tuple
 
+
 class IstaParsItem(scrapy.Item):
     _id = scrapy.Field()
     id = scrapy.Field(output_processor=TakeFirst())
